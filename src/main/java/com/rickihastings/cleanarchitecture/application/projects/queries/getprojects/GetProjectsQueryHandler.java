@@ -1,8 +1,8 @@
 package com.rickihastings.cleanarchitecture.application.projects.queries.getprojects;
 
+import an.awesome.pipelinr.Command;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
-import io.jkratz.mediator.core.RequestHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class GetProjectsQueryHandler implements RequestHandler<GetProjectsQuery, List<ProjectDto>> {
+public class GetProjectsQueryHandler implements Command.Handler<GetProjectsQuery, List<ProjectDto>> {
 
     private final IProjectRepository projectRepository;
     private final ModelMapper modelMapper;

@@ -1,15 +1,15 @@
 package com.rickihastings.cleanarchitecture.application.projects.commands.createproject;
 
+import an.awesome.pipelinr.Command;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import com.rickihastings.cleanarchitecture.domain.Project;
-import io.jkratz.mediator.core.RequestHandler;
 import org.modelmapper.ModelMapper;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CreateProjectCommandHandler implements RequestHandler<CreateProjectCommand, ProjectDto> {
+public class CreateProjectCommandHandler implements Command.Handler<CreateProjectCommand, ProjectDto> {
 
     private final IProjectRepository projectRepository;
     private final ModelMapper modelMapper;
