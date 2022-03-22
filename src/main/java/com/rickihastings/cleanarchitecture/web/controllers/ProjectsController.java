@@ -5,18 +5,18 @@ import com.rickihastings.cleanarchitecture.application.projects.commands.createp
 import com.rickihastings.cleanarchitecture.application.projects.queries.getprojects.GetProjectsQuery;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/projects")
-public class ProjectsController {
+public class ProjectsController extends ApiControllerBase {
 
-    private final Pipeline pipeline;
-
-    public ProjectsController(Pipeline pipeline) {
-        this.pipeline = pipeline;
+    protected ProjectsController(Pipeline pipeline) {
+        super(pipeline);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)

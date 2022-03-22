@@ -8,9 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity @Data @NoArgsConstructor @Table(name = "project")
+@Entity
+@Data
+@NoArgsConstructor
+@Table(name = "project")
 public class Project {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
 
     @NonNull

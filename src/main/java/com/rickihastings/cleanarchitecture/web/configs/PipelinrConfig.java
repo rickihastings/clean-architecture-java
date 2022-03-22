@@ -13,8 +13,9 @@ public class PipelinrConfig {
     @Bean
     Pipeline pipeline(ObjectProvider<Command.Handler> commandHandlers, ObjectProvider<Notification.Handler> notificationHandlers, ObjectProvider<Command.Middleware> middlewares) {
         return new Pipelinr()
-                .with(commandHandlers::stream)
-                .with(notificationHandlers::stream)
-                .with(middlewares::orderedStream);
+            .with(commandHandlers::stream)
+            .with(notificationHandlers::stream)
+            .with(middlewares::orderedStream);
     }
 }
+
