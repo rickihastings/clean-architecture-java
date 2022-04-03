@@ -5,7 +5,6 @@ import com.rickihastings.cleanarchitecture.application.projects.commands.createp
 import com.rickihastings.cleanarchitecture.application.projects.queries.getprojects.GetProjectsQuery;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

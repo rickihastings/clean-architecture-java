@@ -6,6 +6,6 @@ import java.util.List;
 
 @Repository
 public interface IProjectRepository {
-    List<Project> findAll();
+    List<Project> findByArchivedFalse();
     Project save(Project project);
 }
