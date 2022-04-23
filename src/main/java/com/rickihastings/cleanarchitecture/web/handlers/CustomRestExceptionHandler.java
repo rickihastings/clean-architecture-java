@@ -25,12 +25,22 @@ import java.util.stream.Collectors;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private ResponseEntity<Object> buildResponse(HttpStatus status, String title, String path, String type, String error) {
+    private ResponseEntity<Object> buildResponse(HttpStatus status,
+                                                 String title,
+                                                 String path,
+                                                 String type,
+                                                 String error)
+    {
         ApiError apiError = new ApiError(status, title, path, type, error);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
-    private ResponseEntity<Object> buildResponse(HttpStatus status, String title, String path, String type, List<String> errors) {
+    private ResponseEntity<Object> buildResponse(HttpStatus status,
+                                                 String title,
+                                                 String path,
+                                                 String type,
+                                                 List<String> errors)
+    {
         ApiError apiError = new ApiError(status, title, path, type, errors);
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }

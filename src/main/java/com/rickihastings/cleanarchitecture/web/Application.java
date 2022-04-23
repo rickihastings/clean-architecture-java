@@ -27,8 +27,10 @@ public class Application {
 			userRole.setName("USER");
 
 			var user = new User();
-			user.setUsername("test");
-			user.setPassword("test");
+			user.setUsername("admin");
+			user.setPassword("admin");
+			user.setFirstName("Admin");
+			user.setLastName("User");
 			user.setIsActive(true);
 			user.setRoles(List.of(userRole));
 

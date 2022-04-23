@@ -16,7 +16,7 @@ import java.util.Collection;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -40,6 +40,10 @@ public class User {
 
     public boolean getIsActive() {
         return isActive;
+    }
+
+    public String getName() {
+        return String.format("%s %s", firstName, lastName);
     }
 
     public void setIsActive(boolean isActive) {
