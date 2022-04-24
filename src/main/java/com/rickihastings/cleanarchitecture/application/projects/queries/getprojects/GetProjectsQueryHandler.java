@@ -4,6 +4,7 @@ import an.awesome.pipelinr.Command;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import com.rickihastings.cleanarchitecture.domain.Project;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.lang.NonNull;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class GetProjectsQueryHandler implements Command.Handler<GetProjectsQuery, List<ProjectDto>> {
 
     private final IProjectRepository projectRepository;
@@ -22,10 +24,6 @@ public class GetProjectsQueryHandler implements Command.Handler<GetProjectsQuery
             map().setCreatedBy(source.getUser().getName());
         }
     };
-
-    public GetProjectsQueryHandler(IProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
-    }
 
     @Override
     public List<ProjectDto> handle(@NonNull GetProjectsQuery query) {

@@ -1,0 +1,14 @@
+com.rickihastings.cleanarchitecture.application.projects.queries.getprojects.GetProjectsQueryHandlerTest.shouldReturnProjectsWhenValid=[
+  [
+    {
+      "title": "Initial Project",
+      "createdAt": "2007-12-03T09:15:30Z",
+      "createdBy": "Joe Bloggs"
+    },
+    {
+      "title": "Second Project",
+      "createdAt": "2007-12-03T09:15:30Z",
+      "createdBy": "Joe Bloggs"
+    }
+  ]
+]

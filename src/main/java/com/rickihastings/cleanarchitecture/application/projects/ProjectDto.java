@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.Instant;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -12,6 +12,6 @@ import java.util.Date;
 public class ProjectDto {
     public Long id;
     public String title;
-    public Date createdAt;
+    public Instant createdAt;
     public String createdBy;
 }

@@ -1,0 +1,5 @@
+com.rickihastings.cleanarchitecture.application.projects.commands.createproject.CreateProjectCommandHandlerTest.shouldCreateProjectWhenValid=[
+  {
+    "title": "Test Project"
+  }
+]

@@ -4,14 +4,14 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiError {
 
-    private final Date timestamp = new Date();
+    private final Instant timestamp = Instant.now();
     private final int status;
     private String error;
     private List<String> errors;

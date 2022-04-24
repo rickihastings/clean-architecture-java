@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.Instant;
 
 @Entity
 @Data
@@ -20,7 +20,7 @@ public class Project {
     @JoinColumn(name = "createdBy")
     private User user;
 
-    private Date createdAt;
+    private Instant createdAt;
 
     @NonNull
     private String title;
