@@ -4,7 +4,6 @@ import an.awesome.pipelinr.Command;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import com.rickihastings.cleanarchitecture.domain.Project;
-import com.rickihastings.cleanarchitecture.domain.User;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.springframework.lang.NonNull;
