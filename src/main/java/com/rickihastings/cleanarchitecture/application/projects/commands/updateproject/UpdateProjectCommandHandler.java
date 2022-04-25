@@ -1,6 +1,7 @@
-package com.rickihastings.cleanarchitecture.application.projects.queries.getprojects;
+package com.rickihastings.cleanarchitecture.application.projects.commands.updateproject;
 
 import an.awesome.pipelinr.Command;
+import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import com.rickihastings.cleanarchitecture.domain.Project;
@@ -10,12 +11,11 @@ import org.modelmapper.PropertyMap;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
-public class GetProjectsQueryHandler implements Command.Handler<GetProjectsQuery, List<ProjectDto>> {
+public class UpdateProjectCommandHandler implements Command.Handler<UpdateProjectCommand, ProjectDto> {
 
     private final IProjectRepository projectRepository;
 
@@ -26,14 +26,22 @@ public class GetProjectsQueryHandler implements Command.Handler<GetProjectsQuery
     };
 
     @Override
-    public List<ProjectDto> handle(@NonNull GetProjectsQuery query) {
+    public ProjectDto handle(@NonNull UpdateProjectCommand command) {
+        var id = command.getId();
+        var optionalProject = projectRepository.findById(id);
+
+        if (optionalProject.isEmpty()) {
+            throw new NotFoundException(String.format("Product %d not found", id));
+        }
+
         var modelMapper = new ModelMapper();
         modelMapper.addMappings(productMap);
 
-        return projectRepository
-                .findAll()
-                .stream()
-                .map(project -> modelMapper.map(project, ProjectDto.class))
-                .collect(Collectors.toList());
+        var project = optionalProject.get();
+        project.setTitle(command.getTitle());
+        project.setUpdatedAt(Instant.now());
+        projectRepository.save(project);
+
+        return modelMapper.map(project, ProjectDto.class);
     }
 }

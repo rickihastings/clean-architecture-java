@@ -1,0 +1,7 @@
+com.rickihastings.cleanarchitecture.application.projects.commands.updateproject.UpdateProjectCommandHandlerTest.shouldUpdateProjectWhenValid=[
+  {
+    "createdBy": "Joe Bloggs",
+    "id": 1,
+    "title": "Updated Title"
+  }
+]

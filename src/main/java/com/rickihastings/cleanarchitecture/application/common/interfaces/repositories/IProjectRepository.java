@@ -3,9 +3,11 @@ package com.rickihastings.cleanarchitecture.application.common.interfaces.reposi
 import com.rickihastings.cleanarchitecture.domain.Project;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface IProjectRepository {
-    List<Project> findByArchivedFalse();
+    List<Project> findAll();
+    Optional<Project> findById(Long id);
     Project save(Project project);
 }

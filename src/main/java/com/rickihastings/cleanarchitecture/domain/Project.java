@@ -21,9 +21,10 @@ public class Project {
     private User user;
 
     private Instant createdAt;
+    private Instant updatedAt;
 
     @NonNull
     private String title;
 
-    private boolean archived = false;
+    private boolean deleted = false;
 }

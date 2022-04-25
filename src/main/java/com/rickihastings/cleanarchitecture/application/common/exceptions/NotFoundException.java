@@ -1,7 +1,11 @@
 package com.rickihastings.cleanarchitecture.application.common.exceptions;
 
-public class NotFoundException extends Exception {
+import an.awesome.pipelinr.AggregateException;
+
+import java.util.List;
+
+public class NotFoundException extends AggregateException {
     public NotFoundException(String error) {
-        super(error);
+        super(List.of(new Exception(error)));
     }
 }

@@ -14,10 +14,13 @@ public class SessionScopeConfig {
     @Bean
     @SessionScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
     public User user() {
-        var auth = SecurityContextHolder.getContext().getAuthentication();
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth != null && auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
-            var user = auth.getPrincipal();
+        if (authentication != null &&
+                authentication
+                        .getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER"))
+        ) {
+            var user = authentication.getPrincipal();
 
             if (user instanceof UserDetails) {
                 return ((UserDetails) user).getUser();

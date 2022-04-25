@@ -22,9 +22,11 @@ public class CreateProjectCommandHandler implements Command.Handler<CreateProjec
     @Override
     public ProjectDto handle(@NonNull CreateProjectCommand command) {
         var modelMapper = new ModelMapper();
+        var now = Instant.now();
 
         Project project = new Project();
-        project.setCreatedAt(Instant.now());
+        project.setCreatedAt(now);
+        project.setUpdatedAt(now);
         project.setTitle(command.getTitle());
         project.setUser(currentUserService.getUser());
 

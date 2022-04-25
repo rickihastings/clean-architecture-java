@@ -1,12 +1,12 @@
-package com.rickihastings.cleanarchitecture.application.projects.commands.createproject;
+package com.rickihastings.cleanarchitecture.application.projects.commands.deleteproject;
 
 import an.awesome.pipelinr.Command;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.rickihastings.cleanarchitecture.application.common.annotations.Authenticate;
-import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -14,9 +14,8 @@ import javax.validation.constraints.NotNull;
 @Setter
 @NoArgsConstructor
 @Authenticate
-public class CreateProjectCommand implements Command<ProjectDto> {
-    @JsonProperty("title")
-    @NotNull(message = "title cannot be null")
-    @NotBlank(message = "title cannot be blank")
-    private String title;
+public class DeleteProjectCommand implements Command<DeleteProjectDto> {
+    @JsonProperty("id")
+    @NotNull(message = "id cannot be null")
+    private Long id;
 }

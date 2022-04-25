@@ -28,7 +28,7 @@ public class UserSeeds {
 
         return users
                 .stream()
-                .filter(u -> Objects.equals(u.getUsername(), username))
+                .filter(user -> Objects.equals(user.getUsername(), username))
                 .findFirst();
     }
 }

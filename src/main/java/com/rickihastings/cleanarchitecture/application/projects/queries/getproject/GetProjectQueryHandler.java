@@ -1,6 +1,7 @@
-package com.rickihastings.cleanarchitecture.application.projects.queries.getprojects;
+package com.rickihastings.cleanarchitecture.application.projects.queries.getproject;
 
 import an.awesome.pipelinr.Command;
+import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import com.rickihastings.cleanarchitecture.domain.Project;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class GetProjectsQueryHandler implements Command.Handler<GetProjectsQuery, List<ProjectDto>> {
+public class GetProjectQueryHandler implements Command.Handler<GetProjectQuery, ProjectDto> {
 
     private final IProjectRepository projectRepository;
 
@@ -26,14 +27,17 @@ public class GetProjectsQueryHandler implements Command.Handler<GetProjectsQuery
     };
 
     @Override
-    public List<ProjectDto> handle(@NonNull GetProjectsQuery query) {
+    public ProjectDto handle(@NonNull GetProjectQuery query) throws NotFoundException {
         var modelMapper = new ModelMapper();
         modelMapper.addMappings(productMap);
 
-        return projectRepository
-                .findAll()
-                .stream()
-                .map(project -> modelMapper.map(project, ProjectDto.class))
-                .collect(Collectors.toList());
+        var id = query.getId();
+        var project = projectRepository.findById(id);
+
+        if (project.isEmpty()) {
+            throw new NotFoundException(String.format("Product %d not found", id));
+        }
+
+        return modelMapper.map(project.get(), ProjectDto.class);
     }
 }
