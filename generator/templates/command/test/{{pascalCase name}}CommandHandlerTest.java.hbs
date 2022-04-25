@@ -1,11 +1,11 @@
-package com.rickihastings.cleanarchitecture.application.projects.commands.createproject;
+package com.rickihastings.cleanarchitecture.application.{{boundary}}.commands.{{strip name}};
 
 import an.awesome.pipelinr.Pipelinr;
 import au.com.origin.snapshots.Expect;
 import au.com.origin.snapshots.junit5.SnapshotExtension;
 import com.rickihastings.cleanarchitecture.DefaultSnapshotSerializer;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.ValidationException;
-import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.I{{pascalCase (getEntity name)}}Repository;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.services.ICurrentUserService;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
 import com.rickihastings.cleanarchitecture.seeds.UserSeeds;
@@ -21,12 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith({ SnapshotExtension.class })
-public class CreateProjectCommandHandlerTest {
+public class {{pascalCase name}}CommandHandlerTest {
 
     private Expect expect;
 
     private final ICurrentUserService currentUserService = Mockito.mock(ICurrentUserService.class);
-    private final IProjectRepository projectRepository = Mockito.mock(IProjectRepository.class);
+    private final I{{pascalCase (getEntity name)}}Repository projectRepository = Mockito.mock(I{{pascalCase (getEntity name)}}Repository.class);
 
     private Pipelinr pipeline;
 
@@ -35,13 +35,13 @@ public class CreateProjectCommandHandlerTest {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
-                .with(() -> Stream.of(new CreateProjectCommandHandler(currentUserService, projectRepository)))
+                .with(() -> Stream.of(new {{pascalCase name}}CommandHandler(currentUserService, {{camelCase (getEntity name)}}Repository)))
                 .with(() -> Stream.of(new ValidationMiddleware(factory)));
     }
 
     @Test
-    public void shouldCreateProjectWhenValid() {
-        var command = new CreateProjectCommand();
+    public void should{{pascalCase name}}WhenValid() {
+        var command = new {{pascalCase name}}Command();
         command.setTitle("Test Project");
         when(currentUserService.getUser()).thenReturn(UserSeeds.getUser("joebloggs").get());
 
@@ -52,14 +52,14 @@ public class CreateProjectCommandHandlerTest {
 
     @Test
     public void shouldThrowValidationErrorTitleNotNull() {
-        var command = new CreateProjectCommand();
+        var command = new {{pascalCase name}}Command();
 
         assertThrows(ValidationException.class, () -> pipeline.send(command));
     }
 
     @Test
     public void shouldThrowValidationErrorTitleNotBlank() {
-        var command = new CreateProjectCommand();
+        var command = new {{pascalCase name}}Command();
         command.setTitle("");
 
         assertThrows(ValidationException.class, () -> pipeline.send(command));

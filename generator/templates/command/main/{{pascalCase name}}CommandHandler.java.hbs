@@ -1,0 +1,37 @@
+package com.rickihastings.cleanarchitecture.application.{{boundary}}.commands.{{strip name}};
+
+import an.awesome.pipelinr.Command;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.I{{pascalCase (getEntity name)}}Repository;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.services.ICurrentUserService;
+import com.rickihastings.cleanarchitecture.application.{{boundary}}.{{pascalCase (getDto name)}};
+import com.rickihastings.cleanarchitecture.domain.{{pascalCase (getEntity name)}};
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+
+@Component
+@RequiredArgsConstructor
+public class {{pascalCase name}}CommandHandler implements Command.Handler<{{pascalCase name}}Command, {{pascalCase (getDto name)}}> {
+
+    private final ICurrentUserService currentUserService;
+    private final I{{pascalCase (getEntity name)}}Repository {{camelCase (getEntity name)}}Repository;
+
+    @Override
+    public {{pascalCase (getDto name)}} handle(@NonNull {{pascalCase name}}Command command) {
+        var modelMapper = new ModelMapper();
+        var now = Instant.now();
+
+        {{pascalCase (getEntity name)}} {{camelCase (getEntity name)}} = new {{pascalCase (getEntity name)}}();
+        {{camelCase (getEntity name)}}.setCreatedAt(now);
+        {{camelCase (getEntity name)}}.setUpdatedAt(now);
+        {{camelCase (getEntity name)}}.setTitle(command.getTitle());
+        {{camelCase (getEntity name)}}.setUser(currentUserService.getUser());
+
+        {{camelCase (getEntity name)}}Repository.save(project);
+
+        return modelMapper.map({{camelCase (getEntity name)}}, {{pascalCase (getDto name)}}.class);
+    }
+}
