@@ -1,0 +1,40 @@
+package com.rickihastings.cleanarchitecture.application.{{boundary}}.queries.{{strip name}};
+
+import an.awesome.pipelinr.Command;
+import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.I{{pascalCase (getEntity name)}}Repository;
+import com.rickihastings.cleanarchitecture.application.{{boundary}}.{{pascalCase (getDto name)}};
+import com.rickihastings.cleanarchitecture.domain.{{pascalCase (getEntity name)}};
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class {{pascalCase name}}QueryHandler implements Command.Handler<{{pascalCase name}}Query, {{pascalCase (getDto name)}}> {
+
+    private final I{{pascalCase (getEntity name)}}Repository {{camelCase (getEntity name)}}Repository;
+
+    PropertyMap<{{pascalCase (getEntity name)}}, {{pascalCase (getDto name)}}> {{lowerCase (getEntity name)}}Map = new PropertyMap<>() {
+        protected void configure() {
+            map().setCreatedBy(source.getUser().getName());
+        }
+    };
+
+    @Override
+    public {{pascalCase (getDto name)}} handle(@NonNull {{pascalCase name}}Query query) throws NotFoundException {
+        var modelMapper = new ModelMapper();
+        modelMapper.addMappings({{lowerCase (getEntity name)}}Map);
+
+        var id = query.getId();
+        var {{lowerCase (getEntity name)}} = {{lowerCase (getEntity name)}}Repository.findById(id);
+
+        if ({{lowerCase (getEntity name)}}.isEmpty()) {
+            throw new NotFoundException(String.format("{{pascalCase (getEntity name)}} %d not found", id));
+        }
+
+        return modelMapper.map({{lowerCase (getEntity name)}}.get(), {{pascalCase (getDto name)}}.class);
+    }
+}

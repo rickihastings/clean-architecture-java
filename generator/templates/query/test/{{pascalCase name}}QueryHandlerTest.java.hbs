@@ -1,0 +1,57 @@
+package com.rickihastings.cleanarchitecture.application.{{boundary}}.queries.{{strip name}};
+
+import an.awesome.pipelinr.Pipelinr;
+import au.com.origin.snapshots.Expect;
+import au.com.origin.snapshots.junit5.SnapshotExtension;
+import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.I{{pascalCase (getEntity name)}}Repository;
+import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
+import com.rickihastings.cleanarchitecture.seeds.{{pascalCase (getEntity name)}}Seeds;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+
+import javax.validation.Validation;
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
+
+@ExtendWith({ SnapshotExtension.class })
+public class {{pascalCase name}}QueryHandlerTest {
+
+    private Expect expect;
+
+    private final I{{pascalCase (getEntity name)}}Repository projectRepository = Mockito.mock(I{{pascalCase (getEntity name)}}Repository.class);
+
+    private Pipelinr pipeline;
+
+    @BeforeEach
+    void setup() {
+        var factory = Validation.buildDefaultValidatorFactory();
+
+        pipeline = new Pipelinr()
+                .with(() -> Stream.of(new {{pascalCase name}}QueryHandler({{camelCase (getEntity name)}}Repository)))
+                .with(() -> Stream.of(new ValidationMiddleware(factory)));
+    }
+
+    @Test
+    public void shouldReturn{{pascalCase name}}WhenValid() {
+        var query = new {{pascalCase name}}Query();
+        query.setId(1L);
+        when({{lowerCase (getEntity name)}}Repository.findById(1L)).thenReturn({{pascalCase (getEntity name)}}Seeds.get{{pascalCase name}}(1L));
+
+        var result = pipeline.send(query);
+
+        expect.serializer("json").toMatchSnapshot(result);
+    }
+
+    @Test
+    public void shouldThrowNotFoundErrorWhenNotFound() {
+        var query = new {{pascalCase name}}Query();
+        query.setId(999L);
+
+        assertThrows(NotFoundException.class, () -> pipeline.send(query));
+    }
+}

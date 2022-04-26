@@ -13,20 +13,18 @@ export default function(plop) {
         return `${parts[parts.length - 1]}-dto`;
     });
 
-    // todo query
-
     plop.setGenerator('command', {
         description: 'Generate a command',
         prompts: [
             {
                 type: 'input',
                 name: 'boundary',
-                message: 'command boundary (e.g. projects)'
+                message: 'command boundary (e.g. projects)',
             },
             {
                 type: 'input',
                 name: 'name',
-                message: 'command name hyphenated (e.g. create-project, delete-project)'
+                message: 'command name hyphenated (e.g. create-project, delete-project)',
             },
         ],
         actions: [
@@ -34,13 +32,43 @@ export default function(plop) {
                 type: 'addMany',
                 destination: '../src/main/java/com/rickihastings/cleanarchitecture/application/{{boundary}}/commands/{{strip name}}',
                 base: 'templates/command/main',
-                templateFiles: 'templates/command/main/*.hbs'
+                templateFiles: 'templates/command/main/*.hbs',
             },
             {
                 type: 'addMany',
                 destination: '../src/test/java/com/rickihastings/cleanarchitecture/application/{{boundary}}/commands/{{strip name}}',
                 base: 'templates/command/test',
-                templateFiles: 'templates/command/test/*.hbs'
+                templateFiles: 'templates/command/test/*.hbs',
+            },
+        ],
+    });
+
+    plop.setGenerator('query', {
+        description: 'Generate a query',
+        prompts: [
+            {
+                type: 'input',
+                name: 'boundary',
+                message: 'query boundary (e.g. projects)'
+            },
+            {
+                type: 'input',
+                name: 'name',
+                message: 'query name hyphenated (e.g. get-project, get-projects)'
+            },
+        ],
+        actions: [
+            {
+                type: 'addMany',
+                destination: '../src/main/java/com/rickihastings/cleanarchitecture/application/{{boundary}}/queries/{{strip name}}',
+                base: 'templates/query/main',
+                templateFiles: 'templates/query/main/*.hbs'
+            },
+            {
+                type: 'addMany',
+                destination: '../src/test/java/com/rickihastings/cleanarchitecture/application/{{boundary}}/queries/{{strip name}}',
+                base: 'templates/query/test',
+                templateFiles: 'templates/query/test/*.hbs'
             }
         ]
     });

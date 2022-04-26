@@ -1,0 +1,20 @@
+package com.rickihastings.cleanarchitecture.application.{{boundary}}.queries.{{strip name}};
+
+import an.awesome.pipelinr.Command;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.rickihastings.cleanarchitecture.application.common.annotations.Authenticate;
+import com.rickihastings.cleanarchitecture.application.{{boundary}}.{{pascalCase (getDto name)}};
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import javax.validation.constraints.NotNull;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Authenticate
+public class {{pascalCase name}}Query implements Command<{{pascalCase (getDto name)}}> {
+    @JsonProperty("id")
+    @NotNull(message = "id cannot be null")
+    private Long id;
+}
