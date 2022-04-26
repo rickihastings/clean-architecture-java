@@ -1,0 +1,10 @@
+package com.rickihastings.cleanarchitecture.domain.events;
+
+import com.rickihastings.cleanarchitecture.domain.common.DomainEvent;
+import com.rickihastings.cleanarchitecture.domain.entities.{{pascalCase (getEntity name)}};
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+public class {{pascalCase event}}Event extends DomainEvent {
+    public {{pascalCase (getEntity name)}} item;
+}

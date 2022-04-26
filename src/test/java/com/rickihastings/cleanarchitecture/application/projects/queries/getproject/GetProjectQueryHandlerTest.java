@@ -2,33 +2,44 @@ package com.rickihastings.cleanarchitecture.application.projects.queries.getproj
 
 import an.awesome.pipelinr.Pipelinr;
 import au.com.origin.snapshots.Expect;
-import au.com.origin.snapshots.junit5.SnapshotExtension;
+import au.com.origin.snapshots.junit4.SnapshotClassRule;
+import au.com.origin.snapshots.junit4.SnapshotRule;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
 import com.rickihastings.cleanarchitecture.seeds.ProjectSeeds;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import com.rickihastings.cleanarchitecture.web.Application;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.Validation;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@ExtendWith({ SnapshotExtension.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)
 public class GetProjectQueryHandlerTest {
+
+    @ClassRule
+    public static SnapshotClassRule snapshotClassRule = new SnapshotClassRule();
+
+    @Rule
+    public SnapshotRule snapshotRule = new SnapshotRule(snapshotClassRule);
 
     private Expect expect;
 
     private final IProjectRepository projectRepository = Mockito.mock(IProjectRepository.class);
-
     private Pipelinr pipeline;
 
-    @BeforeEach
-    void setup() {
+    @Before
+    public void setup() {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
@@ -47,11 +58,11 @@ public class GetProjectQueryHandlerTest {
         expect.serializer("json").toMatchSnapshot(result);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void shouldThrowNotFoundErrorWhenNotFound() {
         var query = new GetProjectQuery();
         query.setId(999L);
 
-        assertThrows(NotFoundException.class, () -> pipeline.send(query));
+        pipeline.send(query);
     }
 }

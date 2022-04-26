@@ -1,7 +1,7 @@
 {
   "type": "module",
   "scripts": {
-    "plop": "plop"
+    "generate": "plop"
   },
   "devDependencies": {
     "plop": "^3.0.5"

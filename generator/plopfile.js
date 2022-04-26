@@ -5,17 +5,12 @@ export default function(plop) {
 
     plop.setHelper('getEntity', function(text) {
         const parts = text.split('-');
-        return parts[parts.length - 1];
+        return parts[parts.length - 1].replace(/s$/, '');
     });
 
     plop.setHelper('getDto', function(text) {
         const parts = text.split('-');
-        return `${parts[parts.length - 1]}-dto`;
-    });
-
-    plop.setHelper('getEntityFromEvent', function(text) {
-        const parts = text.split('-');
-        return parts[0];
+        return `${parts[parts.length - 1].replace(/s$/, '')}-dto`;
     });
 
     plop.setGenerator('command', {
@@ -31,6 +26,11 @@ export default function(plop) {
                 name: 'name',
                 message: 'command name hyphenated (e.g. create-project, delete-project)',
             },
+            {
+                type: 'input',
+                name: 'event',
+                message: 'event emitted hyphenated (e.g. project-created, project-deleted)',
+            },
         ],
         actions: [
             {
@@ -38,6 +38,12 @@ export default function(plop) {
                 destination: '../src/main/java/com/rickihastings/cleanarchitecture/application/{{boundary}}/commands/{{strip name}}',
                 base: 'templates/command/main',
                 templateFiles: 'templates/command/main/*.hbs',
+            },
+            {
+                type: 'addMany',
+                destination: '../src/main/java/com/rickihastings/cleanarchitecture/domain/events',
+                base: 'templates/command/event',
+                templateFiles: 'templates/command/event/*.hbs',
             },
             {
                 type: 'addMany',
@@ -78,8 +84,8 @@ export default function(plop) {
         ]
     });
 
-    plop.setGenerator('event', {
-        description: 'Generate an event',
+    plop.setGenerator('event handler', {
+        description: 'Generate an event handler',
         prompts: [
             {
                 type: 'input',
@@ -91,15 +97,9 @@ export default function(plop) {
             {
                 type: 'addMany',
                 destination: '../src/main/java/com/rickihastings/cleanarchitecture/application/eventhandlers',
-                base: 'templates/event/eventhandlers',
-                templateFiles: 'templates/event/eventhandlers/*.hbs'
+                base: 'templates/event-handler',
+                templateFiles: 'templates/event-handler/*.hbs'
             },
-            {
-                type: 'addMany',
-                destination: '../src/main/java/com/rickihastings/cleanarchitecture/domain/events',
-                base: 'templates/event/event',
-                templateFiles: 'templates/event/event/*.hbs'
-            }
         ]
     });
 };

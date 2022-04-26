@@ -2,18 +2,25 @@ package com.rickihastings.cleanarchitecture.application.projects.commands.update
 
 import an.awesome.pipelinr.Pipelinr;
 import au.com.origin.snapshots.Expect;
-import au.com.origin.snapshots.junit5.SnapshotExtension;
+import au.com.origin.snapshots.junit4.SnapshotClassRule;
+import au.com.origin.snapshots.junit4.SnapshotRule;
 import com.rickihastings.cleanarchitecture.DefaultSnapshotSerializer;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.ValidationException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
+import com.rickihastings.cleanarchitecture.application.common.middleware.AuthenticationMiddleware;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
-import com.rickihastings.cleanarchitecture.application.projects.commands.createproject.CreateProjectCommand;
 import com.rickihastings.cleanarchitecture.seeds.ProjectSeeds;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import com.rickihastings.cleanarchitecture.web.Application;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.Validation;
 import java.util.stream.Stream;
@@ -21,22 +28,29 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
-@ExtendWith({ SnapshotExtension.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)
+@WithMockUser
 public class UpdateProjectCommandHandlerTest {
+
+    @ClassRule
+    public static SnapshotClassRule snapshotClassRule = new SnapshotClassRule();
+
+    @Rule
+    public SnapshotRule snapshotRule = new SnapshotRule(snapshotClassRule);
 
     private Expect expect;
 
     private final IProjectRepository projectRepository = Mockito.mock(IProjectRepository.class);
-
     private Pipelinr pipeline;
 
-    @BeforeEach
-    void setup() {
+    @Before
+    public void setup() {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
                 .with(() -> Stream.of(new UpdateProjectCommandHandler(projectRepository, pipeline)))
-                .with(() -> Stream.of(new ValidationMiddleware(factory)));
+                .with(() -> Stream.of(new AuthenticationMiddleware(), new ValidationMiddleware(factory)));
     }
 
     @Test
@@ -53,33 +67,31 @@ public class UpdateProjectCommandHandlerTest {
         expect.serializer(DefaultSnapshotSerializer.class).toMatchSnapshot(result);
     }
 
-    @Test
+    @Test(expected = NotFoundException.class)
     public void shouldThrowNotFoundErrorWhenNotFound() {
         var command = new UpdateProjectCommand();
         command.setId(999L);
         command.setTitle("Updated Title");
 
-        assertThrows(NotFoundException.class, () -> {
-            pipeline.send(command);
+        pipeline.send(command);
 
-            verify(projectRepository, never()).save(any());
-        });
+        verify(projectRepository, never()).save(any());
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     public void shouldThrowValidationErrorTitleNotNull() {
         var command = new UpdateProjectCommand();
         command.setId(1L);
 
-        assertThrows(ValidationException.class, () -> pipeline.send(command));
+        pipeline.send(command);
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     public void shouldThrowValidationErrorTitleNotBlank() {
         var command = new UpdateProjectCommand();
         command.setId(1L);
         command.setTitle("");
 
-        assertThrows(ValidationException.class, () -> pipeline.send(command));
+        pipeline.send(command);
     }
 }

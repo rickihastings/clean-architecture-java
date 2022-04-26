@@ -1,10 +1,12 @@
 package com.rickihastings.cleanarchitecture.application.{{boundary}}.commands.{{strip name}};
 
 import an.awesome.pipelinr.Command;
+import an.awesome.pipelinr.Pipeline;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.I{{pascalCase (getEntity name)}}Repository;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.services.ICurrentUserService;
 import com.rickihastings.cleanarchitecture.application.{{boundary}}.{{pascalCase (getDto name)}};
-import com.rickihastings.cleanarchitecture.domain.{{pascalCase (getEntity name)}};
+import com.rickihastings.cleanarchitecture.domain.entities.{{pascalCase (getEntity name)}};
+import com.rickihastings.cleanarchitecture.domain.events.{{pascalCase event}}Event;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.lang.NonNull;
@@ -18,6 +20,7 @@ public class {{pascalCase name}}CommandHandler implements Command.Handler<{{pasc
 
     private final ICurrentUserService currentUserService;
     private final I{{pascalCase (getEntity name)}}Repository {{camelCase (getEntity name)}}Repository;
+    private final Pipeline pipeline;
 
     @Override
     public {{pascalCase (getDto name)}} handle(@NonNull {{pascalCase name}}Command command) {
@@ -31,6 +34,8 @@ public class {{pascalCase name}}CommandHandler implements Command.Handler<{{pasc
         {{camelCase (getEntity name)}}.setUser(currentUserService.getUser());
 
         {{camelCase (getEntity name)}}Repository.save(project);
+
+        pipeline.send(new {{pascalCase event}}Event(project));
 
         return modelMapper.map({{camelCase (getEntity name)}}, {{pascalCase (getDto name)}}.class);
     }

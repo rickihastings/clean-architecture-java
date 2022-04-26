@@ -2,41 +2,57 @@ package com.rickihastings.cleanarchitecture.application.{{boundary}}.commands.{{
 
 import an.awesome.pipelinr.Pipelinr;
 import au.com.origin.snapshots.Expect;
-import au.com.origin.snapshots.junit5.SnapshotExtension;
+import au.com.origin.snapshots.junit4.SnapshotClassRule;
+import au.com.origin.snapshots.junit4.SnapshotRule;
 import com.rickihastings.cleanarchitecture.DefaultSnapshotSerializer;
+import com.rickihastings.cleanarchitecture.application.common.exceptions.UnauthorizedException;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.ValidationException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.I{{pascalCase (getEntity name)}}Repository;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.services.ICurrentUserService;
+import com.rickihastings.cleanarchitecture.application.common.middleware.AuthenticationMiddleware;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
 import com.rickihastings.cleanarchitecture.seeds.UserSeeds;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import com.rickihastings.cleanarchitecture.web.Application;
+import org.junit.Before;
+import org.junit.ClassRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.validation.Validation;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@ExtendWith({ SnapshotExtension.class })
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)
+@WithMockUser
 public class {{pascalCase name}}CommandHandlerTest {
+
+    @ClassRule
+    public static SnapshotClassRule snapshotClassRule = new SnapshotClassRule();
+
+    @Rule
+    public SnapshotRule snapshotRule = new SnapshotRule(snapshotClassRule);
 
     private Expect expect;
 
     private final ICurrentUserService currentUserService = Mockito.mock(ICurrentUserService.class);
     private final I{{pascalCase (getEntity name)}}Repository projectRepository = Mockito.mock(I{{pascalCase (getEntity name)}}Repository.class);
-
     private Pipelinr pipeline;
 
-    @BeforeEach
-    void setup() {
+    @Before
+    public void setup() {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
-                .with(() -> Stream.of(new {{pascalCase name}}CommandHandler(currentUserService, {{camelCase (getEntity name)}}Repository)))
-                .with(() -> Stream.of(new ValidationMiddleware(factory)));
+                .with(() -> Stream.of(new {{pascalCase name}}CommandHandler(currentUserService, {{camelCase (getEntity name)}}Repository, pipeline)))
+                .with(() -> Stream.of(new AuthenticationMiddleware(), new ValidationMiddleware(factory)));
     }
 
     @Test
@@ -50,18 +66,26 @@ public class {{pascalCase name}}CommandHandlerTest {
         expect.serializer(DefaultSnapshotSerializer.class).toMatchSnapshot(result);
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     public void shouldThrowValidationErrorTitleNotNull() {
         var command = new {{pascalCase name}}Command();
 
-        assertThrows(ValidationException.class, () -> pipeline.send(command));
+        pipeline.send(command);
     }
 
-    @Test
+    @Test(expected = ValidationException.class)
     public void shouldThrowValidationErrorTitleNotBlank() {
         var command = new {{pascalCase name}}Command();
         command.setTitle("");
 
-        assertThrows(ValidationException.class, () -> pipeline.send(command));
+        pipeline.send(command);
+    }
+
+    @Test(expected = UnauthorizedException.class)
+    @WithAnonymousUser
+    public void shouldThrowUnauthorizedExceptionWhenAnonymous() {
+        var command = new {{pascalCase name}}Command();
+
+        pipeline.send(command);
     }
 }
