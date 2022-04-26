@@ -1,7 +1,7 @@
 package com.rickihastings.cleanarchitecture.web.configs;
 
-import com.rickihastings.cleanarchitecture.domain.User;
-import com.rickihastings.cleanarchitecture.domain.UserDetails;
+import com.rickihastings.cleanarchitecture.domain.entities.User;
+import com.rickihastings.cleanarchitecture.domain.entities.UserDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ScopedProxyMode;

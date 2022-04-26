@@ -3,7 +3,7 @@ package com.rickihastings.cleanarchitecture.application.projects.queries.getproj
 import an.awesome.pipelinr.Command;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
-import com.rickihastings.cleanarchitecture.domain.Project;
+import com.rickihastings.cleanarchitecture.domain.entities.Project;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;

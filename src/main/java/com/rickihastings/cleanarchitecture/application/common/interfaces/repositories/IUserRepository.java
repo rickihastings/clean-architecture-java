@@ -1,6 +1,6 @@
 package com.rickihastings.cleanarchitecture.application.common.interfaces.repositories;
 
-import com.rickihastings.cleanarchitecture.domain.User;
+import com.rickihastings.cleanarchitecture.domain.entities.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

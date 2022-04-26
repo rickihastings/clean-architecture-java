@@ -1,8 +1,8 @@
 package com.rickihastings.cleanarchitecture.web;
 
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IUserRepository;
-import com.rickihastings.cleanarchitecture.domain.Role;
-import com.rickihastings.cleanarchitecture.domain.User;
+import com.rickihastings.cleanarchitecture.domain.entities.Role;
+import com.rickihastings.cleanarchitecture.domain.entities.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

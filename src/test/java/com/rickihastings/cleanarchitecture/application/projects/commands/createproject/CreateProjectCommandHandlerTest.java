@@ -35,7 +35,7 @@ public class CreateProjectCommandHandlerTest {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
-                .with(() -> Stream.of(new CreateProjectCommandHandler(currentUserService, projectRepository)))
+                .with(() -> Stream.of(new CreateProjectCommandHandler(currentUserService, projectRepository, pipeline)))
                 .with(() -> Stream.of(new ValidationMiddleware(factory)));
     }
 

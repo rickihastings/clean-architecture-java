@@ -1,10 +1,12 @@
 package com.rickihastings.cleanarchitecture.application.projects.commands.updateproject;
 
 import an.awesome.pipelinr.Command;
+import an.awesome.pipelinr.Pipeline;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
-import com.rickihastings.cleanarchitecture.domain.Project;
+import com.rickihastings.cleanarchitecture.domain.entities.Project;
+import com.rickihastings.cleanarchitecture.domain.events.ProjectUpdatedEvent;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -18,6 +20,7 @@ import java.time.Instant;
 public class UpdateProjectCommandHandler implements Command.Handler<UpdateProjectCommand, ProjectDto> {
 
     private final IProjectRepository projectRepository;
+    private final Pipeline pipeline;
 
     PropertyMap<Project, ProjectDto> productMap = new PropertyMap<>() {
         protected void configure() {
@@ -41,6 +44,8 @@ public class UpdateProjectCommandHandler implements Command.Handler<UpdateProjec
         project.setTitle(command.getTitle());
         project.setUpdatedAt(Instant.now());
         projectRepository.save(project);
+
+        pipeline.send(new ProjectUpdatedEvent(project));
 
         return modelMapper.map(project, ProjectDto.class);
     }

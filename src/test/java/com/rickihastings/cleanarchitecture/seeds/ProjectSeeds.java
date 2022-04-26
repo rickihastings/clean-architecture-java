@@ -1,6 +1,6 @@
 package com.rickihastings.cleanarchitecture.seeds;
 
-import com.rickihastings.cleanarchitecture.domain.Project;
+import com.rickihastings.cleanarchitecture.domain.entities.Project;
 
 import java.time.Instant;
 import java.util.List;

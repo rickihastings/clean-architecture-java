@@ -13,6 +13,11 @@ export default function(plop) {
         return `${parts[parts.length - 1]}-dto`;
     });
 
+    plop.setHelper('getEntityFromEvent', function(text) {
+        const parts = text.split('-');
+        return parts[0];
+    });
+
     plop.setGenerator('command', {
         description: 'Generate a command',
         prompts: [
@@ -69,6 +74,31 @@ export default function(plop) {
                 destination: '../src/test/java/com/rickihastings/cleanarchitecture/application/{{boundary}}/queries/{{strip name}}',
                 base: 'templates/query/test',
                 templateFiles: 'templates/query/test/*.hbs'
+            }
+        ]
+    });
+
+    plop.setGenerator('event', {
+        description: 'Generate an event',
+        prompts: [
+            {
+                type: 'input',
+                name: 'name',
+                message: 'event name hyphenated (e.g. project-created, project-deleted)'
+            },
+        ],
+        actions: [
+            {
+                type: 'addMany',
+                destination: '../src/main/java/com/rickihastings/cleanarchitecture/application/eventhandlers',
+                base: 'templates/event/eventhandlers',
+                templateFiles: 'templates/event/eventhandlers/*.hbs'
+            },
+            {
+                type: 'addMany',
+                destination: '../src/main/java/com/rickihastings/cleanarchitecture/domain/events',
+                base: 'templates/event/event',
+                templateFiles: 'templates/event/event/*.hbs'
             }
         ]
     });

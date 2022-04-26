@@ -1,12 +1,11 @@
 package com.rickihastings.cleanarchitecture.seeds;
 
-import com.rickihastings.cleanarchitecture.domain.Role;
-import com.rickihastings.cleanarchitecture.domain.User;
+import com.rickihastings.cleanarchitecture.domain.entities.Role;
+import com.rickihastings.cleanarchitecture.domain.entities.User;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class UserSeeds {
 

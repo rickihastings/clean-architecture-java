@@ -1,8 +1,8 @@
 package com.rickihastings.cleanarchitecture.infrastructure.services;
 
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IUserRepository;
-import com.rickihastings.cleanarchitecture.domain.User;
-import com.rickihastings.cleanarchitecture.domain.UserDetails;
+import com.rickihastings.cleanarchitecture.domain.entities.User;
+import com.rickihastings.cleanarchitecture.domain.entities.UserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

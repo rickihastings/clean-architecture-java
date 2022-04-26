@@ -1,4 +1,4 @@
-package com.rickihastings.cleanarchitecture.domain;
+package com.rickihastings.cleanarchitecture.domain.entities;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

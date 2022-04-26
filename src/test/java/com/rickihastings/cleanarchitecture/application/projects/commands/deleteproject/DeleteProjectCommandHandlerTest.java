@@ -34,7 +34,7 @@ public class DeleteProjectCommandHandlerTest {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
-                .with(() -> Stream.of(new DeleteProjectCommandHandler(projectRepository)))
+                .with(() -> Stream.of(new DeleteProjectCommandHandler(projectRepository, pipeline)))
                 .with(() -> Stream.of(new ValidationMiddleware(factory)));
     }
 
