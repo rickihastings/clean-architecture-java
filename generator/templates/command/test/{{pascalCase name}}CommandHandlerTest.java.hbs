@@ -9,6 +9,7 @@ import com.rickihastings.cleanarchitecture.application.common.exceptions.Unautho
 import com.rickihastings.cleanarchitecture.application.common.exceptions.ValidationException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.I{{pascalCase (getEntity name)}}Repository;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.services.ICurrentUserService;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.services.IEventsService;
 import com.rickihastings.cleanarchitecture.application.common.middleware.AuthenticationMiddleware;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
 import com.rickihastings.cleanarchitecture.seeds.UserSeeds;
@@ -43,6 +44,7 @@ public class {{pascalCase name}}CommandHandlerTest {
     private Expect expect;
 
     private final ICurrentUserService currentUserService = Mockito.mock(ICurrentUserService.class);
+    private final IEventsService eventsService = Mockito.mock(IEventsService.class);
     private final I{{pascalCase (getEntity name)}}Repository projectRepository = Mockito.mock(I{{pascalCase (getEntity name)}}Repository.class);
     private Pipelinr pipeline;
 
@@ -51,7 +53,7 @@ public class {{pascalCase name}}CommandHandlerTest {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
-                .with(() -> Stream.of(new {{pascalCase name}}CommandHandler(currentUserService, {{camelCase (getEntity name)}}Repository, pipeline)))
+                .with(() -> Stream.of(new {{pascalCase name}}CommandHandler(currentUserService, eventsService, {{camelCase (getEntity name)}}Repository)))
                 .with(() -> Stream.of(new AuthenticationMiddleware(), new ValidationMiddleware(factory)));
     }
 

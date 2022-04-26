@@ -9,6 +9,7 @@ import com.rickihastings.cleanarchitecture.application.common.exceptions.Unautho
 import com.rickihastings.cleanarchitecture.application.common.exceptions.ValidationException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.services.ICurrentUserService;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.services.IEventsService;
 import com.rickihastings.cleanarchitecture.application.common.middleware.AuthenticationMiddleware;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
 import com.rickihastings.cleanarchitecture.seeds.UserSeeds;
@@ -43,6 +44,7 @@ public class CreateProjectCommandHandlerTest {
     private Expect expect;
 
     private final ICurrentUserService currentUserService = Mockito.mock(ICurrentUserService.class);
+    private final IEventsService eventsService = Mockito.mock(IEventsService.class);
     private final IProjectRepository projectRepository = Mockito.mock(IProjectRepository.class);
     private Pipelinr pipeline;
 
@@ -51,7 +53,7 @@ public class CreateProjectCommandHandlerTest {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
-                .with(() -> Stream.of(new CreateProjectCommandHandler(currentUserService, projectRepository, pipeline)))
+                .with(() -> Stream.of(new CreateProjectCommandHandler(currentUserService, eventsService, projectRepository)))
                 .with(() -> Stream.of(new AuthenticationMiddleware(), new ValidationMiddleware(factory)));
     }
 

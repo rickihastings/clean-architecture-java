@@ -8,6 +8,7 @@ import com.rickihastings.cleanarchitecture.DefaultSnapshotSerializer;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.UnauthorizedException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.services.IEventsService;
 import com.rickihastings.cleanarchitecture.application.common.middleware.AuthenticationMiddleware;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
 import com.rickihastings.cleanarchitecture.seeds.ProjectSeeds;
@@ -41,6 +42,7 @@ public class DeleteProjectCommandHandlerTest {
 
     private Expect expect;
 
+    private final IEventsService eventsService = Mockito.mock(IEventsService.class);
     private final IProjectRepository projectRepository = Mockito.mock(IProjectRepository.class);
     private Pipelinr pipeline;
 
@@ -49,7 +51,7 @@ public class DeleteProjectCommandHandlerTest {
         var factory = Validation.buildDefaultValidatorFactory();
 
         pipeline = new Pipelinr()
-                .with(() -> Stream.of(new DeleteProjectCommandHandler(projectRepository, pipeline)))
+                .with(() -> Stream.of(new DeleteProjectCommandHandler(eventsService, projectRepository)))
                 .with(() -> Stream.of(new AuthenticationMiddleware(), new ValidationMiddleware(factory)));
     }
 

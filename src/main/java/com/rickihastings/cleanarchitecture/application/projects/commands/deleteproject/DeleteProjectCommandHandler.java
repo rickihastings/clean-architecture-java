@@ -4,6 +4,7 @@ import an.awesome.pipelinr.Command;
 import an.awesome.pipelinr.Pipeline;
 import com.rickihastings.cleanarchitecture.application.common.exceptions.NotFoundException;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.services.IEventsService;
 import com.rickihastings.cleanarchitecture.domain.events.ProjectDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class DeleteProjectCommandHandler implements Command.Handler<DeleteProjectCommand, DeleteProjectDto> {
 
+    private final IEventsService eventsService;
     private final IProjectRepository projectRepository;
-    private final Pipeline pipeline;
 
     @Override
     public DeleteProjectDto handle(@NonNull DeleteProjectCommand command) {
@@ -29,7 +30,7 @@ public class DeleteProjectCommandHandler implements Command.Handler<DeleteProjec
         project.setDeleted(true);
         projectRepository.save(project);
 
-        pipeline.send(new ProjectDeletedEvent(project));
+        eventsService.publish(new ProjectDeletedEvent(project));
 
         return new DeleteProjectDto();
     }

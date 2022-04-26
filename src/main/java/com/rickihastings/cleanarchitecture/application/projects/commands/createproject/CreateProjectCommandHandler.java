@@ -4,6 +4,7 @@ import an.awesome.pipelinr.Command;
 import an.awesome.pipelinr.Pipeline;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.services.ICurrentUserService;
+import com.rickihastings.cleanarchitecture.application.common.interfaces.services.IEventsService;
 import com.rickihastings.cleanarchitecture.application.projects.ProjectDto;
 import com.rickihastings.cleanarchitecture.domain.entities.Project;
 import com.rickihastings.cleanarchitecture.domain.events.ProjectCreatedEvent;
@@ -19,8 +20,8 @@ import java.time.Instant;
 public class CreateProjectCommandHandler implements Command.Handler<CreateProjectCommand, ProjectDto> {
 
     private final ICurrentUserService currentUserService;
+    private final IEventsService eventsService;
     private final IProjectRepository projectRepository;
-    private final Pipeline pipeline;
 
     @Override
     public ProjectDto handle(@NonNull CreateProjectCommand command) {
@@ -35,7 +36,7 @@ public class CreateProjectCommandHandler implements Command.Handler<CreateProjec
 
         projectRepository.save(project);
 
-        pipeline.send(new ProjectCreatedEvent(project));
+        eventsService.publish(new ProjectCreatedEvent(project));
 
         return modelMapper.map(project, ProjectDto.class);
     }
