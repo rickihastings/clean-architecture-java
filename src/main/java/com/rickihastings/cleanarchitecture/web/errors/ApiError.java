@@ -36,4 +36,12 @@ public class ApiError {
         this.path = path;
         this.type = type;
     }
+
+    public ApiError(HttpStatus status, String message, String path, String type) {
+        super();
+        this.status = status.value();
+        this.message = message;
+        this.path = path;
+        this.type = type;
+    }
 }

@@ -14,4 +14,5 @@ public class ProjectDto {
     public String title;
     public Instant createdAt;
     public String createdBy;
+    public Instant updatedAt;
 }

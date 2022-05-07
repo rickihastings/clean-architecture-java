@@ -2,15 +2,12 @@ package com.rickihastings.cleanarchitecture.application.projects.queries.getproj
 
 import an.awesome.pipelinr.Pipelinr;
 import au.com.origin.snapshots.Expect;
-import au.com.origin.snapshots.junit4.SnapshotClassRule;
-import au.com.origin.snapshots.junit4.SnapshotRule;
 import com.rickihastings.cleanarchitecture.application.common.interfaces.repositories.IProjectRepository;
 import com.rickihastings.cleanarchitecture.application.common.middleware.ValidationMiddleware;
 import com.rickihastings.cleanarchitecture.seeds.ProjectSeeds;
+import com.rickihastings.cleanarchitecture.utils.UnitTestBase;
 import com.rickihastings.cleanarchitecture.web.Application;
 import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -24,13 +21,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class GetProjectsQueryHandlerTest {
-
-    @ClassRule
-    public static SnapshotClassRule snapshotClassRule = new SnapshotClassRule();
-
-    @Rule
-    public SnapshotRule snapshotRule = new SnapshotRule(snapshotClassRule);
+public class GetProjectsQueryHandlerTest extends UnitTestBase {
 
     private Expect expect;
 

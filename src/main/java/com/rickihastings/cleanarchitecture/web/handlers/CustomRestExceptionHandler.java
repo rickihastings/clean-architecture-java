@@ -45,6 +45,15 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
+    private ResponseEntity<Object> buildResponse(HttpStatus status,
+                                                 String title,
+                                                 String path,
+                                                 String type)
+    {
+        ApiError apiError = new ApiError(status, title, path, type);
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
     /** Authentication Exceptions */
     @ExceptionHandler({ BadCredentialsException.class })
     public ResponseEntity<Object> handleBadCredentialsException(WebRequest request) {
@@ -103,8 +112,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "An error occurred while processing your request",
                 ((ServletWebRequest)request).getRequest().getRequestURI(),
-                "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1",
-                ex.toString()
+                "https://datatracker.ietf.org/doc/html/rfc7231#section-6.6.1"
         );
     }
 

@@ -23,7 +23,8 @@ exercise. Feel free to use this however you wish.
 
 ## Todo
 
-- [ ] Integration Tests
+- [x] Integration Tests
+- [ ] Refactor domain layer to remove dependencies
 
 ## Getting Started
 

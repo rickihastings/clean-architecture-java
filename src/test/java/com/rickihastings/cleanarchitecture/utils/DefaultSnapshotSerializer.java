@@ -1,4 +1,4 @@
-package com.rickihastings.cleanarchitecture;
+package com.rickihastings.cleanarchitecture.utils;
 
 import au.com.origin.snapshots.serializers.DeterministicJacksonSnapshotSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,8 +16,11 @@ public class DefaultSnapshotSerializer extends DeterministicJacksonSnapshotSeria
         objectMapper.addMixIn(ProjectDto.class, IgnoreEntityFields.class);
     }
 
-    abstract class IgnoreEntityFields {
+    abstract static class IgnoreEntityFields {
         @JsonIgnore
         abstract Instant getCreatedAt();
+
+        @JsonIgnore
+        abstract Instant getUpdatedAt();
     }
 }
